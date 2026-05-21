@@ -1,0 +1,182 @@
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #0A1628;
+  --navy-light: #152240;
+  --navy-mid: #1E3A5F;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F5E4B5;
+  --white: #F8F6F0;
+  --mist: #D4D9E0;
+  --anchor: #6B7A94;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--navy);
+  color: var(--white);
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography ─────────────────────────────────────── */
+
+h1, h2, h3, h4 {
+  font-family: Georgia, Cambria, 'Times New Roman', serif;
+  letter-spacing: -0.02em;
+}
+
+/* ── Form Elements ──────────────────────────────────── */
+
+.field-label {
+  @apply block text-sm font-semibold text-captain-mist mb-1.5 tracking-wide uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+.field-input {
+  @apply w-full px-4 py-3 rounded-lg border text-captain-white placeholder-captain-anchor;
+  @apply transition-all duration-200 focus:outline-none;
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(201,168,76,0.2);
+  font-size: 0.95rem;
+}
+
+.field-input:focus {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+}
+
+.field-input.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+}
+
+.field-error {
+  @apply text-red-400 text-xs mt-1.5 flex items-center gap-1;
+}
+
+/* ── Buttons ────────────────────────────────────────── */
+
+.btn-primary {
+  @apply relative inline-flex items-center justify-center gap-2;
+  @apply px-8 py-4 rounded-lg font-bold tracking-wide uppercase;
+  @apply transition-all duration-200;
+  @apply disabled:opacity-60 disabled:cursor-not-allowed;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color: var(--navy);
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg;
+  @apply border border-captain-gold/30 text-captain-gold;
+  @apply hover:bg-captain-gold/10 transition-all duration-200;
+  @apply text-sm font-medium;
+}
+
+/* ── Cards ──────────────────────────────────────────── */
+
+.card {
+  @apply rounded-xl border;
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(201,168,76,0.12);
+  backdrop-filter: blur(4px);
+}
+
+/* ── Admin table ────────────────────────────────────── */
+
+.admin-table {
+  @apply w-full text-sm;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-table th {
+  @apply px-4 py-3 text-left font-semibold text-captain-anchor uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-table th:hover {
+  color: var(--gold);
+}
+
+.admin-table td {
+  @apply px-4 py-3 text-captain-mist;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.admin-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* ── Wave decoration ────────────────────────────────── */
+
+.wave-divider {
+  background: linear-gradient(180deg, var(--navy) 0%, transparent 100%);
+}
+
+/* ── Gold shimmer animation ─────────────────────────── */
+
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--gold) 0%,
+    var(--gold-light) 50%,
+    var(--gold) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Loading skeleton ───────────────────────────────── */
+
+.skeleton {
+  @apply rounded animate-pulse;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.05) 0%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
