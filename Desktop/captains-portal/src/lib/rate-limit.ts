@@ -1,6 +1,6 @@
+cat > src/lib/rate-limit.ts << 'EOF'
 // src/lib/rate-limit.ts
 // Simple in-memory rate limiter — resets on server restart
-// For production with multiple servers, replace with Redis
 
 interface RateLimitEntry {
   count: number
@@ -16,7 +16,6 @@ export function checkRateLimit(ip: string): { allowed: boolean; remaining: numbe
   const entry = store.get(ip)
 
   if (!entry || now > entry.resetAt) {
-    // First request or window expired — reset
     store.set(ip, { count: 1, resetAt: now + WINDOW_MS })
     return { allowed: true, remaining: MAX_REQUESTS - 1 }
   }
@@ -29,7 +28,6 @@ export function checkRateLimit(ip: string): { allowed: boolean; remaining: numbe
   return { allowed: true, remaining: MAX_REQUESTS - entry.count }
 }
 
-// Hash an IP address for storage (privacy-preserving)
 export async function hashIp(ip: string): Promise<string> {
   const encoder = new TextEncoder()
   const data = encoder.encode(ip + (process.env.NEXTAUTH_SECRET || 'salt'))
@@ -38,11 +36,10 @@ export async function hashIp(ip: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('').slice(0, 16)
 }
 
-// Cleanup old entries periodically
 setInterval(() => {
   const now = Date.now()
-store.forEach((entry, key) => {
-  if (now > entry.resetAt) store.delete(key)
-})
-    if (now > val.resetAt) store.delete(key)
-}, 10 * 60 * 1000) // every 10 minutes
+  store.forEach((entry, key) => {
+    if (now > entry.resetAt) store.delete(key)
+  })
+}, 10 * 60 * 1000)
+EOF
