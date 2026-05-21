@@ -41,8 +41,8 @@ export async function hashIp(ip: string): Promise<string> {
 // Cleanup old entries periodically
 setInterval(() => {
   const now = Date.now()
-store.forEach((val, key) => {
-  if (now > val.resetAt) store.delete(key)
+store.forEach((entry, key) => {
+  if (now > entry.resetAt) store.delete(key)
 })
     if (now > val.resetAt) store.delete(key)
 }, 10 * 60 * 1000) // every 10 minutes
