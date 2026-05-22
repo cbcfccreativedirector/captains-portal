@@ -123,8 +123,7 @@ export default function JoinPage() {
       />
 
       {/* ── Header ── */}
-      <header className="relative border-b border-captain-gold/10"
-style={{ background: '#eac6c8' }}>
+      <header className="relative border-b border-captain-gold/10" style={{ background: '#eac6c8' }}>
         <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
           <a href="https://www.captainsfc.com" className="flex items-center gap-3 group">
             <span className="text-2xl"><img src="/logo.svg" alt="CB Captains FC" className="h-10 w-auto" /></span>
