@@ -290,14 +290,14 @@ style={{ background: '#eac6c8' }}>
               <FormField
                 label="Favorite Soccer Club"
                 required
-                placeholder="Atletico Madrid"
+                placeholder="1.FC Kaiserslautern"
                 error={errors.favoriteSoccerClub?.message}
                 {...register('favoriteSoccerClub')}
               />
               <FormField
                 label="Favorite Player"
                 required
-                placeholder="Obed Vargas"
+                placeholder="Clint Dempsey"
                 error={errors.favoritePlayer?.message}
                 {...register('favoritePlayer')}
               />
