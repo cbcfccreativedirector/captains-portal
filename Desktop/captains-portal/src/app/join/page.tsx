@@ -186,7 +186,7 @@ style={{ background: '#eac6c8' }}>
                 <FormField
                   label="First Name"
                   required
-                  placeholder="Lionel"
+                  placeholder="Obed"
                   error={errors.firstName?.message}
                   {...register('Obed')}
                 />
