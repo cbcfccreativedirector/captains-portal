@@ -58,8 +58,13 @@ export async function appendPlayer(player: Omit<PlayerRecord, 'id'>) {
     player.hypeSong,
     player.somethingRandom,
     player.ipHash,
-    player.preferredPosition || '',
-    player.secondaryPosition || '',
+player.preferredPosition || '',
+player.secondaryPosition || '',
+player.dominantFoot || '',
+player.height || '',
+player.weight || '',
+player.highestLevelPlayed || '',
+player.jerseyNumber || '',
   ]
 
   const appendRes = await sheets.spreadsheets.values.append({
@@ -114,8 +119,13 @@ export async function getAllPlayers(): Promise<PlayerRecord[]> {
     hypeSong: row[14] || '',
     somethingRandom: row[15] || '',
     ipHash: row[16] || '',
-    preferredPosition: row[17] || '',
-    secondaryPosition: row[18] || '',
+preferredPosition: row[17] || '',
+secondaryPosition: row[18] || '',
+dominantFoot: row[19] || '',
+height: row[20] || '',
+weight: row[21] || '',
+highestLevelPlayed: row[22] || '',
+jerseyNumber: row[23] || '',
   }))
 }
 
@@ -146,8 +156,13 @@ export async function updatePlayer(rowId: string, player: Partial<PlayerRecord>)
     player.hypeSong ?? currentRow[14],
     player.somethingRandom ?? currentRow[15],
     currentRow[16],
-    player.preferredPosition ?? currentRow[17],
-    player.secondaryPosition ?? currentRow[18],
+player.preferredPosition ?? currentRow[17],
+player.secondaryPosition ?? currentRow[18],
+player.dominantFoot ?? currentRow[19],
+player.height ?? currentRow[20],
+player.weight ?? currentRow[21],
+player.highestLevelPlayed ?? currentRow[22],
+player.jerseyNumber ?? currentRow[23],
   ]
 
   await sheets.spreadsheets.values.update({

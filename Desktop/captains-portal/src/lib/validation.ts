@@ -99,6 +99,30 @@ secondaryPosition: z
     .string()
     .min(1, 'Share something random about yourself')
     .max(500, 'Maximum 500 characters'),
+
+    dominantFoot: z
+  .enum(['Left', 'Right', 'Both'], { errorMap: () => ({ message: 'Please select your dominant foot' }) }),
+
+height: z
+  .string()
+  .min(1, 'Height is required')
+  .max(20, 'Too long'),
+
+weight: z
+  .string()
+  .min(1, 'Weight is required')
+  .max(20, 'Too long'),
+
+highestLevelPlayed: z
+  .string()
+  .min(1, 'Please select your highest level played')
+  .max(50, 'Too long'),
+
+jerseyNumber: z
+  .string()
+  .max(3, 'Too long')
+  .optional()
+  .transform((v) => v ?? ''),
 })
 
 export type PlayerFormValues = z.infer<typeof playerSchema>

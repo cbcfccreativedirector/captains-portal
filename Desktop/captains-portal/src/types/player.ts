@@ -18,6 +18,11 @@ instagramHandle: string
   favoritePlayer: string
   hypeSong: string
   somethingRandom: string
+  dominantFoot: string
+height: string
+weight: string
+highestLevelPlayed: string
+jerseyNumber: string
 }
 
 export interface PlayerRecord extends PlayerFormData {
@@ -59,4 +64,9 @@ export const SHEET_COLUMNS = [
   'Hype Song',
   'Something Random',
   'IP Hash',
+  'Dominant Foot',
+'Height',
+'Weight',
+'Highest Level Played',
+'Jersey Number',
 ] as const

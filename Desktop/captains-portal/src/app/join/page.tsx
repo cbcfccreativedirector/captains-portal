@@ -297,6 +297,57 @@ style={{ background: '#eac6c8' }}>
               />
             </div>
 
+            <SectionDivider label="Player Profile" />
+
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 mb-6">
+  <div>
+    <label className="field-label">Dominant Foot <span className="text-captain-gold ml-1">*</span></label>
+    <select className="field-input" {...register('dominantFoot')}>
+      <option value="">Select...</option>
+      <option value="Left">Left</option>
+      <option value="Right">Right</option>
+      <option value="Both">Both</option>
+    </select>
+    {errors.dominantFoot && <p className="field-error">{errors.dominantFoot.message}</p>}
+  </div>
+  <FormField
+    label="Height"
+    required
+    placeholder='e.g. 5\'11"'
+    error={errors.height?.message}
+    {...register('height')}
+  />
+  <FormField
+    label="Weight"
+    required
+    placeholder="e.g. 175 lbs"
+    error={errors.weight?.message}
+    {...register('weight')}
+  />
+</div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+  <div>
+    <label className="field-label">Highest Level Played <span className="text-captain-gold ml-1">*</span></label>
+    <select className="field-input" {...register('highestLevelPlayed')}>
+      <option value="">Select...</option>
+      <option value="Recreational">Recreational</option>
+      <option value="Amateur">Amateur</option>
+      <option value="College Club">College Club</option>
+      <option value="College Varsity">College Varsity</option>
+      <option value="Semi-Professional">Semi-Professional</option>
+      <option value="Professional">Professional</option>
+    </select>
+    {errors.highestLevelPlayed && <p className="field-error">{errors.highestLevelPlayed.message}</p>}
+  </div>
+  <FormField
+    label="Jersey Number Preference"
+    placeholder="e.g. 10"
+    error={errors.jerseyNumber?.message}
+    {...register('jerseyNumber')}
+  />
+</div>
+
             {/* ── Soccer Personality ── */}
             <SectionDivider label="Soccer Personality" />
 
