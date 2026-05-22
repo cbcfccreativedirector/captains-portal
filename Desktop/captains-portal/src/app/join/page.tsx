@@ -188,7 +188,7 @@ style={{ background: '#eac6c8' }}>
                   required
                   placeholder="Lionel"
                   error={errors.firstName?.message}
-                  {...register('firstName')}
+                  {...register('Obed')}
                 />
               </div>
               <div className="sm:col-span-1">
@@ -204,7 +204,7 @@ style={{ background: '#eac6c8' }}>
                 <FormField
                   label="Last Name"
                   required
-                  placeholder="Messi"
+                  placeholder="Vargas"
                   error={errors.lastName?.message}
                   {...register('lastName')}
                 />
