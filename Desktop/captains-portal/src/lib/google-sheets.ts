@@ -74,9 +74,8 @@ export async function appendPlayer(player: Omit<PlayerRecord, 'id'>) {
     player.favoritePlayer,
     player.hypeSong,
     player.somethingRandom,
-    player.ipHash,
-    player.preferredPosition,
-    player.secondaryPosition,
+    player.preferredPosition || '',
+    player.secondaryPosition || '',
   ]
 
   const appendRes = await sheets.spreadsheets.values.append({
