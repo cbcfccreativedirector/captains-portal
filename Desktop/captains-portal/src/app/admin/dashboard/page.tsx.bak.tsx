@@ -22,16 +22,14 @@ function exportCSV(players: PlayerRecord[]) {
     'ID', 'Submitted', 'First Name', 'MI', 'Last Name', 'DOB', 'Years Exp',
     'Hometown', 'Phone', 'Email', 'Instagram', 'TikTok',
     'Fav Club', 'Fav Player', 'Hype Song', 'Something Random',
-    'Preferred Position', 'Secondary Position', 'Dominant Foot',
-    'Height', 'Weight', 'Highest Level Played', 'Jersey Number',
+    'Preferred Position', 'Secondary Position',
   ]
   const rows = players.map((p) => [
     p.id, formatDate(p.submittedAt), p.firstName, p.middleInitial, p.lastName,
     p.dateOfBirth, p.yearsOfExperience, p.hometown, p.phone, p.email,
     p.instagramHandle, p.tiktokHandle, p.favoriteSoccerClub, p.favoritePlayer,
     p.hypeSong, `"${p.somethingRandom.replace(/"/g, '""')}"`,
-    p.preferredPosition || '', p.secondaryPosition || '', p.dominantFoot || '',
-    p.height || '', p.weight || '', p.highestLevelPlayed || '', p.jerseyNumber || '',
+    p.preferredPosition || '', p.secondaryPosition || '',
   ])
   const csv = [headers, ...rows].map((r) => r.join(',')).join('\n')
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
@@ -91,11 +89,6 @@ function EditModal({
     { key: 'email', label: 'Email', type: 'email' },
     { key: 'preferredPosition', label: 'Preferred Position' },
     { key: 'secondaryPosition', label: 'Secondary Position' },
-    { key: 'dominantFoot', label: 'Dominant Foot' },
-    { key: 'height', label: 'Height' },
-    { key: 'weight', label: 'Weight' },
-    { key: 'highestLevelPlayed', label: 'Highest Level Played' },
-    { key: 'jerseyNumber', label: 'Jersey Number' },
     { key: 'instagramHandle', label: 'Instagram' },
     { key: 'tiktokHandle', label: 'TikTok' },
     { key: 'favoriteSoccerClub', label: 'Favorite Club' },
@@ -159,11 +152,6 @@ function PlayerDetail({ player, onClose }: { player: PlayerRecord; onClose: () =
     ['Experience', `${player.yearsOfExperience} year${player.yearsOfExperience !== 1 ? 's' : ''}`],
     ['Preferred Position', player.preferredPosition || '—'],
     ['Secondary Position', player.secondaryPosition || '—'],
-    ['Dominant Foot', player.dominantFoot || '—'],
-    ['Height', player.height || '—'],
-    ['Weight', player.weight || '—'],
-    ['Highest Level Played', player.highestLevelPlayed || '—'],
-    ['Jersey Number', player.jerseyNumber || '—'],
     ['Hometown', player.hometown],
     ['Phone', player.phone],
     ['Email', player.email],
@@ -194,7 +182,7 @@ function PlayerDetail({ player, onClose }: { player: PlayerRecord; onClose: () =
         <dl className="space-y-3">
           {rows.map(([label, value]) => (
             <div key={label} className="flex gap-3">
-              <dt className="text-captain-anchor text-xs font-bold tracking-wide uppercase min-w-[130px] pt-0.5">{label}</dt>
+              <dt className="text-captain-anchor text-xs font-bold tracking-wide uppercase min-w-[110px] pt-0.5">{label}</dt>
               <dd className="text-captain-mist text-sm flex-1 break-words">{value}</dd>
             </div>
           ))}
