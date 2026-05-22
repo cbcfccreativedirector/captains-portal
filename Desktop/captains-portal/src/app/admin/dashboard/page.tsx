@@ -1,12 +1,9 @@
 // src/app/admin/dashboard/page.tsx
-// Admin dashboard — full CRUD for player records
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { signOut } from 'next-auth/react'
 import { PlayerRecord } from '@/types/player'
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function formatDate(iso: string) {
   if (!iso) return '—'
@@ -25,15 +22,15 @@ function exportCSV(players: PlayerRecord[]) {
     'ID', 'Submitted', 'First Name', 'MI', 'Last Name', 'DOB', 'Years Exp',
     'Hometown', 'Phone', 'Email', 'Instagram', 'TikTok',
     'Fav Club', 'Fav Player', 'Hype Song', 'Something Random',
+    'Preferred Position', 'Secondary Position',
   ]
-
   const rows = players.map((p) => [
     p.id, formatDate(p.submittedAt), p.firstName, p.middleInitial, p.lastName,
     p.dateOfBirth, p.yearsOfExperience, p.hometown, p.phone, p.email,
     p.instagramHandle, p.tiktokHandle, p.favoriteSoccerClub, p.favoritePlayer,
     p.hypeSong, `"${p.somethingRandom.replace(/"/g, '""')}"`,
+    p.preferredPosition || '', p.secondaryPosition || '',
   ])
-
   const csv = [headers, ...rows].map((r) => r.join(',')).join('\n')
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
@@ -44,12 +41,8 @@ function exportCSV(players: PlayerRecord[]) {
   URL.revokeObjectURL(url)
 }
 
-// ─── Edit Modal ───────────────────────────────────────────────────────────────
-
 function EditModal({
-  player,
-  onClose,
-  onSave,
+  player, onClose, onSave,
 }: {
   player: PlayerRecord
   onClose: () => void
@@ -66,14 +59,12 @@ function EditModal({
   const handleSave = async () => {
     setSaving(true)
     setError(null)
-
     try {
       const res = await fetch(`/api/players/${player.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-
       const json = await res.json()
       if (!res.ok) {
         setError(json.message || 'Failed to save.')
@@ -96,6 +87,8 @@ function EditModal({
     { key: 'hometown', label: 'Hometown' },
     { key: 'phone', label: 'Phone', type: 'tel' },
     { key: 'email', label: 'Email', type: 'email' },
+    { key: 'preferredPosition', label: 'Preferred Position' },
+    { key: 'secondaryPosition', label: 'Secondary Position' },
     { key: 'instagramHandle', label: 'Instagram' },
     { key: 'tiktokHandle', label: 'TikTok' },
     { key: 'favoriteSoccerClub', label: 'Favorite Club' },
@@ -114,11 +107,8 @@ function EditModal({
           <h2 className="text-xl font-display text-captain-gold">
             Edit — {player.firstName} {player.lastName}
           </h2>
-          <button onClick={onClose} className="text-captain-anchor hover:text-captain-white transition-colors text-2xl leading-none">
-            ×
-          </button>
+          <button onClick={onClose} className="text-captain-anchor hover:text-captain-white transition-colors text-2xl leading-none">×</button>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {fields.map(({ key, label, type = 'text' }) => (
             <div key={key}>
@@ -131,7 +121,6 @@ function EditModal({
               />
             </div>
           ))}
-
           <div className="sm:col-span-2">
             <label className="field-label">Something Random</label>
             <textarea
@@ -142,35 +131,21 @@ function EditModal({
             />
           </div>
         </div>
-
         {error && (
-          <div className="mt-4 px-4 py-3 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
-            {error}
-          </div>
+          <div className="mt-4 px-4 py-3 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">{error}</div>
         )}
-
         <div className="flex gap-3 mt-6">
           <button onClick={handleSave} disabled={saving} className="btn-primary flex-1">
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
-          <button onClick={onClose} className="btn-secondary flex-1">
-            Cancel
-          </button>
+          <button onClick={onClose} className="btn-secondary flex-1">Cancel</button>
         </div>
       </div>
     </div>
   )
 }
 
-// ─── Player Detail Drawer ─────────────────────────────────────────────────────
-
-function PlayerDetail({
-  player,
-  onClose,
-}: {
-  player: PlayerRecord
-  onClose: () => void
-}) {
+function PlayerDetail({ player, onClose }: { player: PlayerRecord; onClose: () => void }) {
   const rows: Array<[string, string]> = [
     ['Submitted', formatDate(player.submittedAt)],
     ['Date of Birth', player.dateOfBirth],
@@ -202,31 +177,21 @@ function PlayerDetail({
             </h2>
             <p className="text-captain-anchor text-xs mt-0.5">Row #{player.id}</p>
           </div>
-          <button onClick={onClose} className="text-captain-anchor hover:text-captain-white text-2xl leading-none mt-1">
-            ×
-          </button>
+          <button onClick={onClose} className="text-captain-anchor hover:text-captain-white text-2xl leading-none mt-1">×</button>
         </div>
-
         <dl className="space-y-3">
           {rows.map(([label, value]) => (
             <div key={label} className="flex gap-3">
-              <dt className="text-captain-anchor text-xs font-bold tracking-wide uppercase min-w-[110px] pt-0.5">
-                {label}
-              </dt>
+              <dt className="text-captain-anchor text-xs font-bold tracking-wide uppercase min-w-[110px] pt-0.5">{label}</dt>
               <dd className="text-captain-mist text-sm flex-1 break-words">{value}</dd>
             </div>
           ))}
         </dl>
-
-        <button onClick={onClose} className="btn-secondary w-full mt-6">
-          Close
-        </button>
+        <button onClick={onClose} className="btn-secondary w-full mt-6">Close</button>
       </div>
     </div>
   )
 }
-
-// ─── Main Dashboard ───────────────────────────────────────────────────────────
 
 type SortKey = keyof PlayerRecord
 type SortDir = 'asc' | 'desc'
@@ -245,8 +210,6 @@ export default function DashboardPage() {
 
   const PER_PAGE = 20
 
-  // ─── Fetch players ──────────────────────────────────────────────────────────
-
   const fetchPlayers = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -264,17 +227,14 @@ export default function DashboardPage() {
 
   useEffect(() => { fetchPlayers() }, [fetchPlayers])
 
-  // ─── Filter + Sort ──────────────────────────────────────────────────────────
-
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim()
     const list = q
       ? players.filter((p) =>
-          [p.firstName, p.lastName, p.email, p.hometown, p.favoriteSoccerClub, p.phone]
-            .some((v) => v.toLowerCase().includes(q))
+          [p.firstName, p.lastName, p.email, p.hometown, p.favoriteSoccerClub, p.phone, p.preferredPosition]
+            .some((v) => (v || '').toLowerCase().includes(q))
         )
       : players
-
     return [...list].sort((a, b) => {
       const va = String(a[sortKey] || '')
       const vb = String(b[sortKey] || '')
@@ -295,14 +255,9 @@ export default function DashboardPage() {
     return <span className="text-captain-gold">{sortDir === 'asc' ? '↑' : '↓'}</span>
   }
 
-  // ─── Delete ─────────────────────────────────────────────────────────────────
-
   const handleDelete = async (player: PlayerRecord) => {
-    const confirmed = window.confirm(
-      `Delete ${player.firstName} ${player.lastName}? This cannot be undone.`
-    )
+    const confirmed = window.confirm(`Delete ${player.firstName} ${player.lastName}? This cannot be undone.`)
     if (!confirmed) return
-
     setDeletingId(player.id)
     try {
       const res = await fetch(`/api/players/${player.id}`, { method: 'DELETE' })
@@ -318,68 +273,39 @@ export default function DashboardPage() {
     }
   }
 
-  // ─── Edit save ──────────────────────────────────────────────────────────────
-
   const handleEditSave = (updated: PlayerRecord) => {
     setPlayers((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
     setEditPlayer(null)
   }
 
-  // ─── Render ─────────────────────────────────────────────────────────────────
-
   return (
     <div className="min-h-screen bg-captain-navy">
-      {/* Modals */}
       {editPlayer && (
-        <EditModal
-          player={editPlayer}
-          onClose={() => setEditPlayer(null)}
-          onSave={handleEditSave}
-        />
+        <EditModal player={editPlayer} onClose={() => setEditPlayer(null)} onSave={handleEditSave} />
       )}
       {viewPlayer && (
         <PlayerDetail player={viewPlayer} onClose={() => setViewPlayer(null)} />
       )}
 
-      {/* Header */}
       <header className="border-b border-captain-gold/10 sticky top-0 z-40"
         style={{ background: 'var(--navy)', backdropFilter: 'blur(8px)' }}>
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-xl">⚓</span>
             <div>
-              <div className="text-captain-gold font-display font-bold text-base leading-none">
-                CB Captains FC
-              </div>
-              <div className="text-captain-anchor text-xs tracking-widest uppercase mt-0.5">
-                Flag Officers Dashboard
-              </div>
+              <div className="text-captain-gold font-display font-bold text-base leading-none">CB Captains FC</div>
+              <div className="text-captain-anchor text-xs tracking-widest uppercase mt-0.5">Flag Officers Dashboard</div>
             </div>
           </div>
-
           <div className="flex items-center gap-3">
-            <a href="/join" target="_blank" className="btn-secondary text-xs hidden sm:flex">
-              View Form ↗
-            </a>
-            <button
-              onClick={() => exportCSV(filtered)}
-              className="btn-secondary text-xs"
-              title="Export to CSV"
-            >
-              Export CSV
-            </button>
-            <button
-              onClick={() => signOut({ callbackUrl: '/admin' })}
-              className="text-captain-anchor hover:text-captain-white text-xs transition-colors"
-            >
-              Sign Out
-            </button>
+            <a href="/join" target="_blank" className="btn-secondary text-xs hidden sm:flex">View Form ↗</a>
+            <button onClick={() => exportCSV(filtered)} className="btn-secondary text-xs">Export CSV</button>
+            <button onClick={() => signOut({ callbackUrl: '/admin' })} className="text-captain-anchor hover:text-captain-white text-xs transition-colors">Sign Out</button>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           {[
             { label: 'Total Players', value: players.length },
@@ -394,30 +320,22 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* Search */}
         <div className="mb-6 flex gap-3 items-center">
           <div className="relative flex-1 max-w-md">
-            <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-captain-anchor w-4 h-4"
-              fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-captain-anchor w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="search"
               className="field-input pl-10"
-              placeholder="Search by name, email, hometown…"
+              placeholder="Search by name, email, position…"
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1) }}
             />
           </div>
-          <button onClick={fetchPlayers} className="btn-secondary text-sm" title="Refresh">
-            ↻ Refresh
-          </button>
+          <button onClick={fetchPlayers} className="btn-secondary text-sm">↻ Refresh</button>
         </div>
 
-        {/* Table */}
         <div className="card overflow-hidden">
           {loading ? (
             <div className="p-12 text-center">
@@ -433,9 +351,7 @@ export default function DashboardPage() {
             <div className="p-12 text-center">
               <div className="text-5xl mb-4">🏴‍☠️</div>
               <p className="text-captain-mist">No players yet — share the signup link!</p>
-              <a href="/join" target="_blank" className="btn-primary inline-flex mt-4">
-                View Signup Form ↗
-              </a>
+              <a href="/join" target="_blank" className="btn-primary inline-flex mt-4">View Signup Form ↗</a>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -446,8 +362,8 @@ export default function DashboardPage() {
                       { key: 'firstName', label: 'Name' },
                       { key: 'email', label: 'Email' },
                       { key: 'hometown', label: 'Hometown' },
-                      { key: 'yearsOfExperience', label: 'Exp' },
                       { key: 'preferredPosition', label: 'Position' },
+                      { key: 'yearsOfExperience', label: 'Exp' },
                       { key: 'submittedAt', label: 'Submitted' },
                     ].map(({ key, label }) => (
                       <th key={key} onClick={() => handleSort(key as SortKey)}>
@@ -472,31 +388,17 @@ export default function DashboardPage() {
                       </td>
                       <td className="text-captain-anchor">{player.email}</td>
                       <td>{player.hometown}</td>
+                      <td>{player.preferredPosition || '—'}</td>
                       <td className="text-center">{player.yearsOfExperience}y</td>
-                      <td className="text-captain-anchor text-xs whitespace-nowrap">
-                        {formatDate(player.submittedAt)}
-                      </td>
+                      <td className="text-captain-anchor text-xs whitespace-nowrap">{formatDate(player.submittedAt)}</td>
                       <td>
                         <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => setViewPlayer(player)}
-                            className="text-captain-anchor hover:text-captain-gold transition-colors text-xs"
-                            title="View details"
-                          >
-                            View
-                          </button>
-                          <button
-                            onClick={() => setEditPlayer(player)}
-                            className="text-captain-anchor hover:text-captain-gold transition-colors text-xs"
-                            title="Edit"
-                          >
-                            Edit
-                          </button>
+                          <button onClick={() => setViewPlayer(player)} className="text-captain-anchor hover:text-captain-gold transition-colors text-xs">View</button>
+                          <button onClick={() => setEditPlayer(player)} className="text-captain-anchor hover:text-captain-gold transition-colors text-xs">Edit</button>
                           <button
                             onClick={() => handleDelete(player)}
                             disabled={deletingId === player.id}
                             className="text-captain-anchor hover:text-red-400 transition-colors text-xs disabled:opacity-40"
-                            title="Delete"
                           >
                             {deletingId === player.id ? '…' : 'Delete'}
                           </button>
@@ -510,26 +412,11 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 mt-6">
-            <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className="btn-secondary text-sm disabled:opacity-40"
-            >
-              ← Prev
-            </button>
-            <span className="text-captain-anchor text-sm px-4">
-              Page {page} of {totalPages}
-            </span>
-            <button
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className="btn-secondary text-sm disabled:opacity-40"
-            >
-              Next →
-            </button>
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} className="btn-secondary text-sm disabled:opacity-40">← Prev</button>
+            <span className="text-captain-anchor text-sm px-4">Page {page} of {totalPages}</span>
+            <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages} className="btn-secondary text-sm disabled:opacity-40">Next →</button>
           </div>
         )}
       </main>
