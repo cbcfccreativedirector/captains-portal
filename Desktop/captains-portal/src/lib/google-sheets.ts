@@ -135,7 +135,7 @@ export async function getAllPlayers(): Promise<PlayerRecord[]> {
     favoritePlayer: row[13] || '',
     hypeSong: row[14] || '',
     somethingRandom: row[15] || '',
-    ipHash: row[16] || '',
+    ipHash: row[19] || '',
     preferredPosition: row[17] || '',
     secondaryPosition: row[18] || '',
   }))
