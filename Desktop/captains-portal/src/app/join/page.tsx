@@ -1,5 +1,4 @@
 // src/app/join/page.tsx
-// Public player submission form — matches Captains FC maritime aesthetic
 'use client'
 
 import { useState } from 'react'
@@ -7,8 +6,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { playerSchema, PlayerFormValues } from '@/lib/validation'
 import { FormField } from '@/components/forms/FormField'
-
-// ─── Success Screen ───────────────────────────────────────────────────────────
 
 function SuccessScreen({ name }: { name: string }) {
   return (
@@ -25,16 +22,10 @@ function SuccessScreen({ name }: { name: string }) {
           A club official will be in touch soon. Set sail!
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a
-            href="https://www.captainsfc.com"
-            className="btn-primary"
-          >
+          <a href="https://www.captainsfc.com" className="btn-primary">
             Return to Home Port
           </a>
-          <button
-            onClick={() => window.location.reload()}
-            className="btn-secondary"
-          >
+          <button onClick={() => window.location.reload()} className="btn-secondary">
             Submit Another
           </button>
         </div>
@@ -42,8 +33,6 @@ function SuccessScreen({ name }: { name: string }) {
     </div>
   )
 }
-
-// ─── Section Divider ──────────────────────────────────────────────────────────
 
 function SectionDivider({ label }: { label: string }) {
   return (
@@ -56,8 +45,6 @@ function SectionDivider({ label }: { label: string }) {
     </div>
   )
 }
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function JoinPage() {
   const [submitted, setSubmitted] = useState(false)
@@ -75,23 +62,21 @@ export default function JoinPage() {
       middleInitial: '',
       instagramHandle: '',
       tiktokHandle: '',
+      jerseyNumber: '',
+      secondaryPosition: '',
     },
   })
 
   const onSubmit = async (data: PlayerFormValues) => {
     setServerError(null)
-
     try {
       const res = await fetch('/api/players', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-
       const json = await res.json()
-
       if (!res.ok) {
-        // Handle field-level errors from server
         if (json.errors) {
           Object.entries(json.errors).forEach(([field, msg]) => {
             setError(field as keyof PlayerFormValues, { message: msg as string })
@@ -101,7 +86,6 @@ export default function JoinPage() {
         }
         return
       }
-
       setSubmittedName(data.firstName)
       setSubmitted(true)
     } catch {
@@ -113,7 +97,6 @@ export default function JoinPage() {
 
   return (
     <div className="min-h-screen bg-captain-navy">
-      {/* ── Background texture ── */}
       <div
         className="fixed inset-0 opacity-30 pointer-events-none"
         style={{
@@ -122,11 +105,10 @@ export default function JoinPage() {
         }}
       />
 
-      {/* ── Header ── */}
       <header className="relative border-b border-captain-gold/10" style={{ background: '#eac6c8' }}>
         <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
           <a href="https://www.captainsfc.com" className="flex items-center gap-3 group">
-            <span className="text-2xl"><img src="/logo.svg" alt="CB Captains FC" className="h-10 w-auto" /></span>
+            <span className="text-2xl">⚓</span>
             <div>
               <div className="text-captain-navy font-display font-bold text-lg leading-none">
                 CB Captains FC
@@ -142,7 +124,6 @@ export default function JoinPage() {
         </div>
       </header>
 
-      {/* ── Hero ── */}
       <div className="relative max-w-3xl mx-auto px-4 py-12 text-center">
         <div
           className="inline-block text-xs font-bold tracking-widest uppercase mb-4 px-3 py-1 rounded-full border"
@@ -152,10 +133,10 @@ export default function JoinPage() {
             background: 'rgba(201,168,76,0.08)',
           }}
         >
-          UPSL Premier Division
+          UPSL Premier Division · 2026 Season
         </div>
         <h1 className="text-4xl sm:text-5xl font-display text-captain-white mb-4 leading-tight">
-          Join the{' '}
+          Join{' '}
           <span
             style={{
               background: 'linear-gradient(135deg, var(--gold), var(--gold-light))',
@@ -168,18 +149,17 @@ export default function JoinPage() {
           </span>
         </h1>
         <p className="text-captain-mist text-lg max-w-xl mx-auto">
-          Submit your player information below.<br />Our staff will review and be in
+          Submit your player information below. Our staff will review and be in
           touch to chart the next steps.
         </p>
       </div>
 
-      {/* ── Form ── */}
       <div className="relative max-w-3xl mx-auto px-4 pb-20">
         <div className="card p-6 sm:p-10">
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            {/* ── Personal Info ── */}
-            <SectionDivider label="Personal Information" />
 
+            {/* Personal Info */}
+            <SectionDivider label="Personal Information" />
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 mb-6">
               <div className="sm:col-span-1">
                 <FormField
@@ -210,21 +190,7 @@ export default function JoinPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-4">
-  <FormField
-    label="Preferred Position"
-    required
-    placeholder="e.g. Center Midfielder"
-    error={errors.preferredPosition?.message}
-    {...register('preferredPosition')}
-  />
-  <FormField
-    label="Secondary Position"
-    placeholder="e.g. Left Back"
-    error={errors.secondaryPosition?.message}
-    {...register('secondaryPosition')}
-  />
-</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <FormField
                 label="Date of Birth"
                 type="date"
@@ -254,9 +220,8 @@ export default function JoinPage() {
               />
             </div>
 
-            {/* ── Contact Info ── */}
+            {/* Contact Info */}
             <SectionDivider label="Contact Information" />
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-6">
               <FormField
                 label="Phone Number"
@@ -276,14 +241,13 @@ export default function JoinPage() {
               />
             </div>
 
-            {/* ── Social Media ── */}
+            {/* Social Media */}
             <SectionDivider label="Social Media" />
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-6">
               <FormField
                 label="Instagram Handle"
                 placeholder="@yourhandle"
-                hint="Optional — no need for the @"
+                hint="Optional"
                 error={errors.instagramHandle?.message}
                 {...register('instagramHandle')}
               />
@@ -296,60 +260,86 @@ export default function JoinPage() {
               />
             </div>
 
+            {/* Player Profile */}
             <SectionDivider label="Player Profile" />
 
-<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 mb-6">
-  <div>
-    <label className="field-label">Dominant Foot <span className="text-captain-gold ml-1">*</span></label>
-    <select className="field-input" {...register('dominantFoot')}>
-      <option value="">Select...</option>
-      <option value="Left">Left</option>
-      <option value="Right">Right</option>
-      <option value="Both">Both</option>
-    </select>
-    {errors.dominantFoot && <p className="field-error">{errors.dominantFoot.message}</p>}
-  </div>
-  <FormField
-    label="Height"
-    required
-    placeholder='e.g. 5\'11"'
-    error={errors.height?.message}
-    {...register('height')}
-  />
-  <FormField
-    label="Weight"
-    required
-    placeholder="e.g. 175 lbs"
-    error={errors.weight?.message}
-    {...register('weight')}
-  />
-</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-4">
+              <FormField
+                label="Preferred Position"
+                required
+                placeholder="e.g. Center Midfielder"
+                error={errors.preferredPosition?.message}
+                {...register('preferredPosition')}
+              />
+              <FormField
+                label="Secondary Position"
+                placeholder="e.g. Left Back"
+                hint="Optional"
+                error={errors.secondaryPosition?.message}
+                {...register('secondaryPosition')}
+              />
+            </div>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-  <div>
-    <label className="field-label">Highest Level Played <span className="text-captain-gold ml-1">*</span></label>
-    <select className="field-input" {...register('highestLevelPlayed')}>
-      <option value="">Select...</option>
-      <option value="Recreational">Recreational</option>
-      <option value="Amateur">Amateur</option>
-      <option value="College Club">College Club</option>
-      <option value="College Varsity">College Varsity</option>
-      <option value="Semi-Professional">Semi-Professional</option>
-      <option value="Professional">Professional</option>
-    </select>
-    {errors.highestLevelPlayed && <p className="field-error">{errors.highestLevelPlayed.message}</p>}
-  </div>
-  <FormField
-    label="Jersey Number Preference"
-    placeholder="e.g. 10"
-    error={errors.jerseyNumber?.message}
-    {...register('jerseyNumber')}
-  />
-</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label className="field-label">
+                  Dominant Foot <span className="text-captain-gold ml-1">*</span>
+                </label>
+                <select className="field-input" {...register('dominantFoot')}>
+                  <option value="">Select...</option>
+                  <option value="Left">Left</option>
+                  <option value="Right">Right</option>
+                  <option value="Both">Both</option>
+                </select>
+                {errors.dominantFoot && (
+                  <p className="field-error">{errors.dominantFoot.message}</p>
+                )}
+              </div>
+              <FormField
+                label="Height"
+                required
+                placeholder='e.g. 5&apos;11"'
+                error={errors.height?.message}
+                {...register('height')}
+              />
+              <FormField
+                label="Weight"
+                required
+                placeholder="e.g. 175 lbs"
+                error={errors.weight?.message}
+                {...register('weight')}
+              />
+            </div>
 
-            {/* ── Soccer Personality ── */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="field-label">
+                  Highest Level Played <span className="text-captain-gold ml-1">*</span>
+                </label>
+                <select className="field-input" {...register('highestLevelPlayed')}>
+                  <option value="">Select...</option>
+                  <option value="Recreational">Recreational</option>
+                  <option value="Amateur">Amateur</option>
+                  <option value="College Club">College Club</option>
+                  <option value="College Varsity">College Varsity</option>
+                  <option value="Semi-Professional">Semi-Professional</option>
+                  <option value="Professional">Professional</option>
+                </select>
+                {errors.highestLevelPlayed && (
+                  <p className="field-error">{errors.highestLevelPlayed.message}</p>
+                )}
+              </div>
+              <FormField
+                label="Jersey Number Preference"
+                placeholder="e.g. 10"
+                hint="Optional"
+                error={errors.jerseyNumber?.message}
+                {...register('jerseyNumber')}
+              />
+            </div>
+
+            {/* Soccer Personality */}
             <SectionDivider label="Soccer Personality" />
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-4">
               <FormField
                 label="Favorite Soccer Club"
@@ -386,12 +376,9 @@ export default function JoinPage() {
                 error={errors.somethingRandom?.message}
                 {...(register('somethingRandom') as any)}
               />
-              <p className="text-captain-anchor text-xs mt-1 text-right">
-                Max 500 characters
-              </p>
+              <p className="text-captain-anchor text-xs mt-1 text-right">Max 500 characters</p>
             </div>
 
-            {/* ── Server error ── */}
             {serverError && (
               <div
                 className="mb-6 px-4 py-3 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm"
@@ -401,7 +388,6 @@ export default function JoinPage() {
               </div>
             )}
 
-            {/* ── Submit ── */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -409,38 +395,19 @@ export default function JoinPage() {
             >
               {isSubmitting ? (
                 <>
-                  <svg
-                    className="animate-spin h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                    />
+                  <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
                   Submitting…
                 </>
               ) : (
-                <>
-                  ⚓ Submit to the Crew
-                </>
+                <>⚓ Submit to the Crew</>
               )}
             </button>
 
             <p className="text-captain-anchor text-xs text-center mt-4">
-              Your information is kept private and only shared with Captains FC
-              club officials.
+              Your information is kept private and only shared with Captains FC club officials.
             </p>
           </form>
         </div>
