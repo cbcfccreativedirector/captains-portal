@@ -95,7 +95,7 @@ export async function getAllPlayers(): Promise<PlayerRecord[]> {
   const sheets = getSheets()
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
-    range: `${SHEET_NAME}!A:S`,
+    range: `${SHEET_NAME}!A:X`,
   })
 
   const rows = res.data.values
