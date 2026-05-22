@@ -136,8 +136,8 @@ export async function getAllPlayers(): Promise<PlayerRecord[]> {
     hypeSong: row[14] || '',
     somethingRandom: row[15] || '',
     ipHash: row[16] || '',
-    preferredPosition: row[18] || '',
-    secondaryPosition: row[19] || '',
+    preferredPosition: row[17] || '',
+    secondaryPosition: row[18] || '',
   }))
 }
 
