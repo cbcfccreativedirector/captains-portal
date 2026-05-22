@@ -211,7 +211,21 @@ style={{ background: '#eac6c8' }}>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 mb-4">
+  <FormField
+    label="Preferred Position"
+    required
+    placeholder="e.g. Center Midfielder"
+    error={errors.preferredPosition?.message}
+    {...register('preferredPosition')}
+  />
+  <FormField
+    label="Secondary Position"
+    placeholder="e.g. Left Back"
+    error={errors.secondaryPosition?.message}
+    {...register('secondaryPosition')}
+  />
+</div><div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <FormField
                 label="Date of Birth"
                 type="date"

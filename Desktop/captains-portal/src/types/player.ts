@@ -10,7 +10,9 @@ export interface PlayerFormData {
   hometown: string
   phone: string
   email: string
-  instagramHandle: string
+  preferredPosition: string
+secondaryPosition: string
+instagramHandle: string
   tiktokHandle: string
   favoriteSoccerClub: string
   favoritePlayer: string
@@ -48,7 +50,9 @@ export const SHEET_COLUMNS = [
   'Hometown',
   'Phone',
   'Email',
-  'Instagram',
+ 'Preferred Position',
+'Secondary Position',
+ 'Instagram',
   'TikTok',
   'Favorite Club',
   'Favorite Player',

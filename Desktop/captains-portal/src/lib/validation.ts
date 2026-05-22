@@ -38,7 +38,16 @@ export const playerSchema = z.object({
     .number({ invalid_type_error: 'Please enter a number' })
     .min(0, 'Cannot be negative')
     .max(50, 'Maximum 50 years'),
+preferredPosition: z
+  .string()
+  .min(1, 'Preferred position is required')
+  .max(50, 'Too long'),
 
+secondaryPosition: z
+  .string()
+  .max(50, 'Too long')
+  .optional()
+  .transform((v) => v ?? ''),
   hometown: z
     .string()
     .min(1, 'Hometown is required')
