@@ -123,20 +123,21 @@ export default function JoinPage() {
       />
 
       {/* ── Header ── */}
-      <header className="relative border-b border-captain-gold/10">
+      <header className="relative border-b border-captain-gold/10"
+style={{ background: '#eac6c8' }}>
         <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
           <a href="https://www.captainsfc.com" className="flex items-center gap-3 group">
             <span className="text-2xl"><img src="/logo.svg" alt="CB Captains FC" className="h-10 w-auto" /></span>
             <div>
-              <div className="text-captain-gold font-display font-bold text-lg leading-none">
+              <div className="text-captain-navy font-display font-bold text-lg leading-none">
                 CB Captains FC
               </div>
-              <div className="text-captain-anchor text-xs tracking-widest uppercase mt-0.5">
+              <div className="text-captain-navy text-xs tracking-widest uppercase mt-0.5">
                 Council Bluffs, Iowa
               </div>
             </div>
           </a>
-          <div className="text-captain-anchor text-xs tracking-wide uppercase hidden sm:block">
+          <div className="text-captain-navy text-xs tracking-wide uppercase hidden sm:block">
             Player Portal
           </div>
         </div>
