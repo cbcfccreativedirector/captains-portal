@@ -175,6 +175,8 @@ function PlayerDetail({
     ['Submitted', formatDate(player.submittedAt)],
     ['Date of Birth', player.dateOfBirth],
     ['Experience', `${player.yearsOfExperience} year${player.yearsOfExperience !== 1 ? 's' : ''}`],
+    ['Preferred Position', player.preferredPosition || '—'],
+    ['Secondary Position', player.secondaryPosition || '—'],
     ['Hometown', player.hometown],
     ['Phone', player.phone],
     ['Email', player.email],
@@ -445,6 +447,7 @@ export default function DashboardPage() {
                       { key: 'email', label: 'Email' },
                       { key: 'hometown', label: 'Hometown' },
                       { key: 'yearsOfExperience', label: 'Exp' },
+                      { key: 'preferredPosition', label: 'Position' },
                       { key: 'submittedAt', label: 'Submitted' },
                     ].map(({ key, label }) => (
                       <th key={key} onClick={() => handleSort(key as SortKey)}>
