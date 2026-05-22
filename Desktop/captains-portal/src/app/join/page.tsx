@@ -152,7 +152,7 @@ export default function JoinPage() {
             background: 'rgba(201,168,76,0.08)',
           }}
         >
-          UPSL Premier Division · 2026 Season
+          UPSL Premier Division
         </div>
         <h1 className="text-4xl sm:text-5xl font-display text-captain-white mb-4 leading-tight">
           Join the{' '}
@@ -164,7 +164,7 @@ export default function JoinPage() {
               backgroundClip: 'text',
             }}
           >
-            Crew
+            Captains FC
           </span>
         </h1>
         <p className="text-captain-mist text-lg max-w-xl mx-auto">
