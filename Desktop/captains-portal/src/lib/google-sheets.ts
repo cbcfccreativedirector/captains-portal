@@ -68,15 +68,15 @@ export async function appendPlayer(player: Omit<PlayerRecord, 'id'>) {
     player.hometown,
     player.phone,
     player.email,
-    player.preferredPosition,
-player.secondaryPosition,
-player.instagramHandle,
+    player.instagramHandle,
     player.tiktokHandle,
     player.favoriteSoccerClub,
     player.favoritePlayer,
     player.hypeSong,
     player.somethingRandom,
     player.ipHash,
+    player.preferredPosition,
+    player.secondaryPosition,
   ]
 
   const appendRes = await sheets.spreadsheets.values.append({
@@ -137,6 +137,8 @@ export async function getAllPlayers(): Promise<PlayerRecord[]> {
     hypeSong: row[14] || '',
     somethingRandom: row[15] || '',
     ipHash: row[16] || '',
+preferredPosition: row[17] || '',
+secondaryPosition: row[18] || '',
   }))
 }
 
