@@ -126,7 +126,7 @@ export default function JoinPage() {
       <header className="relative border-b border-captain-gold/10">
         <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
           <a href="https://www.captainsfc.com" className="flex items-center gap-3 group">
-            <span className="text-2xl">⚓</span>
+            <span className="text-2xl"><img src="/logo.svg" alt="CB Captains FC" className="h-10 w-auto" /></span>
             <div>
               <div className="text-captain-gold font-display font-bold text-lg leading-none">
                 CB Captains FC
@@ -168,7 +168,7 @@ export default function JoinPage() {
           </span>
         </h1>
         <p className="text-captain-mist text-lg max-w-xl mx-auto">
-          Submit your player information below. Our staff will review and be in
+          Submit your player information below.<br />Our staff will review and be in
           touch to chart the next steps.
         </p>
       </div>
