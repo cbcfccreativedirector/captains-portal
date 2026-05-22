@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -129,5 +129,14 @@ export default function AdminLoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+import { Suspense } from 'react'
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <AdminLoginContent />
+    </Suspense>
   )
 }
