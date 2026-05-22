@@ -188,7 +188,7 @@ style={{ background: '#eac6c8' }}>
                   required
                   placeholder="Obed"
                   error={errors.firstName?.message}
-                  {...register('Obed')}
+                  {...register('firstName')}
                 />
               </div>
               <div className="sm:col-span-1">
