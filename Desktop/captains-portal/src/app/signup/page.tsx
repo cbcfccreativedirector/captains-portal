@@ -51,7 +51,7 @@ function SectionDivider({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4 py-2">
       <div className="flex-1 h-px" style={{ background: `${MAGENTA}30` }} />
-      <span className="text-xs font-bold tracking-widest uppercase" style={{ color: `${MAGENTA}90` }}>
+      <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#eac6c8' }}>
         {label}
       </span>
       <div className="flex-1 h-px" style={{ background: `${MAGENTA}30` }} />
@@ -148,7 +148,7 @@ export default function SignupPage() {
       <header className="relative border-b" style={{ borderColor: `${MAGENTA}20`, background: CAP_BLUE }}>
         <div className="max-w-3xl mx-auto px-4 py-6 flex items-center justify-between">
           <a href="https://www.captainsfc.com" className="flex items-center gap-3">
-            <span className="text-2xl">⚽</span>
+            <img src="/logo.svg" alt="CB Captains FC" className="h-10 w-auto" />
             <div>
               <div className="font-display font-bold text-lg leading-none" style={{ color: WARM_WHITE }}>
                 CB Captains Women FC
