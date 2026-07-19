@@ -16,27 +16,20 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.password) return null
 
         const adminPassword = process.env.ADMIN_PASSWORD
-        if (!adminPassword) {
-          console.error('ADMIN_PASSWORD environment variable not set!')
-          return null
-        }
-
-        // Compare with bcrypt if password looks hashed, or plain text for dev
-        let isValid = false
-
-        if (adminPassword.startsWith('$2')) {
-          // It's already a bcrypt hash (recommended for production)
-          isValid = await bcrypt.compare(credentials.password, adminPassword)
-        } else {
-          // Plain text comparison (only for initial setup)
-          isValid = credentials.password === adminPassword
-        }
-
-        if (isValid) {
-          return { id: 'admin', name: 'Club Official', email: 'admin@captainsfc.com' }
-        }
-
-        return null
+const womenPassword = process.env.ADMIN_PASSWORD_WOMEN
+const checkPassword = (stored: string | undefined, input: string) => {
+if (!stored) return false
+if (stored.startsWith('$2')) return bcrypt.compareSync(input, stored)
+return input === stored
+}
+if (checkPassword(adminPassword, credentials.password)) {
+return { id: 'admin', name: 'Club Official', email: 'admin@captainsfc.com' }
+}
+if (checkPassword(womenPassword, credentials.password)) {
+return { id: 'women-admin', name: 'Women\'s Coach', email:
+'women@captainsfc.com' }
+}
+return null
       },
     }),
   ],
